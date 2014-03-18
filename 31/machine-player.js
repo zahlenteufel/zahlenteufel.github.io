@@ -13,18 +13,16 @@ function machineDecideCard() {
 	for (var i = 0; i < 6; ++i) {
 		if (this.game.cardsLeft[i] > 0) {
 			possibleMoves.push(i)
-			if (!this.isWinnerPosition(substractOneInIndex(this.game.cardsLeft, i))) {
-				console.log(i+" is a loser position for you :P")
-				return i; 
-			}
+			if (!this.isWinnerPosition(substractOneInIndex(this.game.cardsLeft, i)))
+				winnerMoves.push(i);
 		}
 	}
+	if (winnerMoves.length > 0)
+		return chooseAtRandom(winnerMoves);
+
 	console.log("there are no winner moves, choosing any one available");
-	
 	if (possibleMoves.length > 0)
 		return chooseAtRandom(possibleMoves);
-	else
-		console.error("there were no cards left");
 }
 
 function cachePositionType(cardsLeft, type) {
