@@ -19,15 +19,51 @@
 			display: flex;
 			align-items: center;
 		}
+
+		.description {
+			color: rgb(135, 129, 129);
+			font-style: italic;
+			font-size: smaller;
+		}
+
+		a.item {
+			text-decoration: none;
+			font-size: larger;
+			color: black;
+		}
+
+		a.item:hover {
+			text-decoration: underline;
+		}
 	</style>
 </head>
 <body>
 	<h1 id="header"><img id="avatar" src="icon.png" alt="Zahlenteufel's avatar" />Zahlenteufel</h1>
 	<ul>
-		<li><a href="appolonius-cone">Appolonius Cone</a></li>
-		<li><a href="31">31</a></li>
-		<li><a href="https://gist.github.com/zahlenteufel/9513461">Lupa</a></li>
-		<li>...</li>
+		<li>
+			<a class="item" href="appolonius-cone">Appolonius Cone <br />
+				<span class="description">3D manipulable model in Processing</span>
+			</a>
+		</li>
+		<li>
+			<a class="item" href="31">31 <br />
+				<span class="description">Combinatorial Game optimal player using dynamic programming</span>
+			</a>
+		</li>
+		<li>
+			<a class="item" href="https://gist.github.com/zahlenteufel/9513461">Lupa <br />
+				<span class="description">Magnifier Glass Effect in MATLAB</span>
+			</a>
+		</li>
+		<li>
+			<a class="item" href="https://gist.github.com/zahlenteufel/10236760">Earley Algorithm <br />
+				<span class="description">CFG Non-deterministic parsing in Python</span>
+			</a>
+		</li>
+		
+		<li>
+			<a class="item" href="https://gist.github.com/zahlenteufel/">...</a>
+		</li>
 	</ul>
 </body>
 </html>
