@@ -1,0 +1,66 @@
+
+body {
+	font-family: arial, sans-serif;
+}
+
+#container {
+	vertical-align: top;
+}
+
+#canvas {
+	display:inline-block;
+}
+
+#controles {
+	display:inline-block;
+	height:660px;
+}
+
+.control {
+	margin-bottom:5px;
+	padding:10px;
+	width:800px;
+	background-color:silver;
+	display:table;
+	border-radius: 0px 0px 5px 5px;
+}
+
+.titulo {
+	padding:2px;
+	font-size:1.5em;
+	background-color:silver;
+	display:table-caption;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.grupo {
+	width: 200px;
+	display:table-cell;
+}
+
+.slider {
+	width:200px;
+	display:inline-block;
+}
+
+.control span {
+	font-size:1.5em;
+}
+
+.control label {
+	width: 30px;
+	font-size:1.2em;
+	display:inline-block;
+}
+
+.control input {
+	font-size:1.2em;
+	width: 50px;
+}
+
+#colorAmb, #colorDif {
+	width: 110px;
+	background-color: rgb(255, 255, 255);
+	color: rgb(255, 255, 255);
+	opacity: 0.75;
+}
