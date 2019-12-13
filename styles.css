@@ -2,6 +2,18 @@ body {
     font-family: sans-serif;
 }
 
+.container {
+    display: flex;
+}
+
+.preview {
+    margin-left: 32px;
+}
+
+.preview img {
+    border-radius: 10px;
+}
+
 #avatar {
     /*width: 36px;*/
     -moz-border-radius: 5px;
