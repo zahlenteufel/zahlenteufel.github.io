@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif;
+}
+
+#avatar {
+    /*width: 36px;*/
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+#header {
+    display: flex;
+    align-items: center;
+}
+
+.description {
+    color: rgb(135, 129, 129);
+    font-style: italic;
+    font-size: smaller;
+}
+
+a.item {
+    text-decoration: none;
+    font-size: larger;
+    color: black;
+}
+
+a.item:hover {
+    text-decoration: underline;
+}
