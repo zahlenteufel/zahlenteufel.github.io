@@ -26,11 +26,14 @@ function drawKMP() {
     ctx.clearRect(0, 0, width, height);
 
     let stepx = width / (pattern.length + 1);
-    for (let x = 0; x <= pattern.length; x++) {
-        let px = stepx * x + stepx / 2;
+    for (let i = 0; i <= pattern.length; i++) {
+        let px = stepx * i + stepx / 2;
         let py = height / 2;
         drawCircle(ctx, px, py, 40);
-        ctx.fillText("*" + pattern.substring(0, x), px, py);
+        if (i == pattern.length) {
+            drawCircle(ctx, px, py, 44);
+        }
+        ctx.fillText("*" + pattern.substring(0, i), px, py);
     }
 }
 
