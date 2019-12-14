@@ -14,14 +14,13 @@ body {
     border-radius: 10px;
 }
 
-#avatar {
-    /*width: 36px;*/
+.avatar {
     -moz-border-radius: 5px;
     border-radius: 5px;
     margin-right: 10px;
 }
 
-#header {
+h1 {
     display: flex;
     align-items: center;
 }
@@ -32,12 +31,16 @@ body {
     font-size: smaller;
 }
 
-a.item {
+.items {
+    min-width: 500px;
+}
+
+.items a {
     text-decoration: none;
     font-size: larger;
     color: black;
 }
 
-a.item:hover {
+.items a:hover {
     text-decoration: underline;
 }
