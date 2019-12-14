@@ -36,6 +36,24 @@ function drawArrow(ctx, x1, y1, x2, y2) {
     ctx.restore();
 }
 
+function drawSelfLoop(ctx, stepx, py) {
+    ctx.save();
+    ctx.translate(stepx / 2, py);
+
+    let loopRadius = 20;
+    let nodeRadius = 40;
+    let dx = 35;
+    let d = Math.SQRT2 * dx;
+    ctx.beginPath();
+    // Use law of cosines to get the angle.
+    let angle = Math.acos(
+        (loopRadius * loopRadius + d * d - nodeRadius * nodeRadius)
+         / 2 / loopRadius / d);
+    ctx.arc(-dx, -dx, loopRadius, angle + Math.PI / 4, 2 * Math.PI - angle + Math.PI / 4);
+    ctx.stroke();
+    ctx.restore();
+}
+
 function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow) {
     let maxSlotAbove = Math.max(...slotsAbove.slice(targetI, sourceI));
     let maxSlotBelow = Math.max(...slotsBelow.slice(targetI, sourceI));
@@ -70,6 +88,7 @@ function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow)
         ctx.stroke();
         drawArrow(ctx, targetX, py + (40 + extra), targetX, py + 40);
     }
+    drawSelfLoop(ctx, stepx, py);
 }
 
 function drawKMP() {
