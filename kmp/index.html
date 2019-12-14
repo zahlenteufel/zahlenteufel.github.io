@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Zahlenteufel - KMP</title>
+    <link rel="shortcut icon" href="../icon.png" />
+    <link rel="stylesheet" type="text/css" href="../common.css">
+    <script src="../common.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>Zahlenteufel - KMP</h1>
+    <p>
+        The Knuth Morris Pratt algorithm is an efficient way to search a string inside another.
+        See the <a href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">Wikipedia article</a>.
+    </p>
+
+    <div>
+        <label for="pattern">Pattern: </label>
+        <input id="pattern" value="nano" required onkeyup="patternChanged();"></input>
+        <button onclick="drawKMP();" id="drawButton">draw</button>
+    </div>
+
+    <canvas id="canvas" style="border: solid 1px black; margin-top: 25px;" width="800" height="300" />
+
+    <img src="kmp.gif" />
+</div>
+</body>
+</html>
