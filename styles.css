@@ -10,9 +10,10 @@ body {
     margin-left: 32px;
     width: 500px;
     height: 500px;
-    background: url(appolonius-cone/screenshot.png);
+    background-image: url(appolonius-cone/screenshot.png);
     background-size: cover;
     border-radius: 10px;
+    transition: background-image 0.2s ease-in-out;
 }
 
 .avatar {
