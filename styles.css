@@ -28,6 +28,7 @@ h1 {
 }
 
 .description {
+    display: block;
     color: rgb(135, 129, 129);
     font-style: italic;
     font-size: smaller;
