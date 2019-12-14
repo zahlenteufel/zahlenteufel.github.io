@@ -53,7 +53,7 @@ var items = [
         "description": "Experimenting with Parzen Window in MATLAB for Density Estimation"
     },
     {
-        "href": "https://gist.github.com/zahlenteufel/9701121",
+        "href": "kmp/index.html",
         "title": "KMP Drawer",
         "description": "KMP Automaton Drawer with Graphviz"
     },
@@ -75,6 +75,7 @@ var items = [
     {
         "href": "bezierPatches/index.htm",
         "title": "3D Scene in WebGL with shaders",
+        "preview": "bezierPatches/preview.png",
         "description": "Utah Teapot made with Bezier Patches, featuring normal display and different types of illumination."
     },
     {
@@ -82,19 +83,5 @@ var items = [
         "title": "..."
     }
 ];
-
-function addLoadEvent(func) {
-    var oldonload = window.onload;
-    if (typeof window.onload != 'function') {
-        window.onload = func;
-    } else {
-        window.onload = function () {
-            if (oldonload) {
-                oldonload();
-            }
-            func();
-        }
-    }
-}
 
 addLoadEvent(populateItems);
