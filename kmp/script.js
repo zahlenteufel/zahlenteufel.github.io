@@ -56,9 +56,10 @@ function drawSelfLoop(ctx, stepx, py) {
     let endAngle = 2 * Math.PI - angle + Math.PI / 4;
     ctx.arc(-dx, -dx, loopRadius, startAngle, endAngle);
     ctx.stroke();
-    let intersectionX = Math.cos(endAngle) * loopRadius;
-    let intersectionY = Math.sin(endAngle) * loopRadius;
-    drawArrowHead(ctx, intersectionX, intersectionY, endAngle + Math.PI / 2);
+    let intersectionX = -dx + Math.cos(startAngle) * loopRadius;
+    let intersectionY = -dx + Math.sin(startAngle) * loopRadius;
+    let correctingAngle = Math.PI / 8; // To make the arrow head look better.
+    drawArrowHead(ctx, intersectionX, intersectionY,  startAngle - Math.PI / 2 + correctingAngle);
     ctx.restore();
 }
 
