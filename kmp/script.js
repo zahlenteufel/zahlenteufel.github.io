@@ -39,7 +39,7 @@ function drawArrowHead(ctx, x, y, angle) {
     ctx.restore();
 }
 
-function drawSelfLoop(ctx, stepx, py) {
+function drawInitialSelfLoop(ctx, stepx, py) {
     ctx.save();
     ctx.translate(stepx / 2, py);
 
@@ -97,7 +97,6 @@ function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow)
         ctx.stroke();
         drawArrow(ctx, targetX, py + (40 + extra), targetX, py + 40);
     }
-    drawSelfLoop(ctx, stepx, py);
 }
 
 function drawKMP() {
@@ -138,6 +137,7 @@ function drawKMP() {
     drawBackArrow(ctx, 2, 0, stepx, py, slotsAbove, slotsBelow);
     drawBackArrow(ctx, 3, 1, stepx, py, slotsAbove, slotsBelow);
     drawBackArrow(ctx, 4, 0, stepx, py, slotsAbove, slotsBelow);
+    drawInitialSelfLoop(ctx, stepx, py);
 }
 
 addLoadEvent(drawKMP);
