@@ -20,10 +20,13 @@ function drawLine(ctx, x1, y1, x2, y2) {
 
 function drawArrow(ctx, x1, y1, x2, y2) {
     drawLine(ctx, x1, y1, x2, y2);
-    // Draw arrow head.
+    drawArrowHead(ctx, x2, y2, Math.atan2(y2 - y1, x2 - x2));
+}
+
+function drawArrowHead(ctx, x, y, angle) {
     ctx.save();
-    ctx.translate(x2, y2);
-    ctx.rotate(Math.atan2(y2 - y1, x2 - x2));
+    ctx.translate(x, y);
+    ctx.rotate(angle);
 
     let arrowHeadLong = 16;
     let arrowHeadThickness = 10;
@@ -49,8 +52,13 @@ function drawSelfLoop(ctx, stepx, py) {
     let angle = Math.acos(
         (loopRadius * loopRadius + d * d - nodeRadius * nodeRadius)
          / 2 / loopRadius / d);
-    ctx.arc(-dx, -dx, loopRadius, angle + Math.PI / 4, 2 * Math.PI - angle + Math.PI / 4);
+    let startAngle = angle + Math.PI / 4;
+    let endAngle = 2 * Math.PI - angle + Math.PI / 4;
+    ctx.arc(-dx, -dx, loopRadius, startAngle, endAngle);
     ctx.stroke();
+    let intersectionX = Math.cos(endAngle) * loopRadius;
+    let intersectionY = Math.sin(endAngle) * loopRadius;
+    drawArrowHead(ctx, intersectionX, intersectionY, endAngle + Math.PI / 2);
     ctx.restore();
 }
 
