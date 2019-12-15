@@ -20,7 +20,7 @@ function drawLine(ctx, x1, y1, x2, y2) {
 
 function drawArrow(ctx, x1, y1, x2, y2) {
     drawLine(ctx, x1, y1, x2, y2);
-    drawArrowHead(ctx, x2, y2, Math.atan2(y2 - y1, x2 - x2));
+    drawArrowHead(ctx, x2, y2, Math.atan2(y2 - y1, x2 - x1));
 }
 
 function drawArrowHead(ctx, x, y, angle) {
