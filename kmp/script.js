@@ -6,6 +6,10 @@ function patternChanged() {
 }
 
 function drawCircle(ctx, x, y, radius) {
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.fill();
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.stroke();
@@ -24,6 +28,7 @@ function drawArrow(ctx, x1, y1, x2, y2) {
 }
 
 function drawArrowHead(ctx, x, y, angle) {
+    ctx.fillStyle = "black";
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle);
@@ -38,6 +43,8 @@ function drawArrowHead(ctx, x, y, angle) {
 
     ctx.restore();
 }
+
+const correctingAngle = Math.PI / 8; // To make the arrow head look better.
 
 function drawInitialSelfLoop(ctx, stepx, py) {
     ctx.save();
@@ -58,9 +65,28 @@ function drawInitialSelfLoop(ctx, stepx, py) {
     ctx.stroke();
     let intersectionX = -dx + Math.cos(startAngle) * loopRadius;
     let intersectionY = -dx + Math.sin(startAngle) * loopRadius;
-    let correctingAngle = Math.PI / 8; // To make the arrow head look better.
     drawArrowHead(ctx, intersectionX, intersectionY,  startAngle - Math.PI / 2 + correctingAngle);
     ctx.restore();
+}
+
+function intersectionEllipseCircle(
+    y, circleX, circleRadius, ellipseX, ellipseHRadius, ellipseVRadius) {
+    
+    // Do bisection on the ellipse circumference and testing inside/outside circle.
+    let outerAng = Math.PI / 2;
+    let innerAng = Math.PI;
+    let midAng;
+    while (innerAng - outerAng > 0.01) {
+        midAng = (innerAng + outerAng) / 2;
+        let px = ellipseX + ellipseHRadius * Math.cos(midAng);
+        if (Math.hypot(px - circleX, ellipseVRadius * Math.sin(midAng)) < circleRadius) {
+            innerAng = midAng;
+        } else {
+            outerAng = midAng;
+        }
+    }
+    return {"x": ellipseX + ellipseHRadius * Math.cos(midAng),
+            "y": y + ellipseVRadius * Math.sin(midAng)};
 }
 
 function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow) {
@@ -81,22 +107,34 @@ function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow)
         }
     }
     ctx.beginPath();
-    let extra = 30 * (maxSlot + 1);
+    let extra = 40 * (maxSlot + 1);
     let sourceX = stepx * sourceI + stepx / 2;
     let targetX = stepx * targetI + stepx / 2;
-    if (useSlotsAbove) {
-        ctx.moveTo(sourceX, py - 40);
-        ctx.lineTo(sourceX, py - (40 + extra));
-        ctx.lineTo(targetX, py - (40 + extra));
-        ctx.stroke();
-        drawArrow(ctx, targetX, py - (40 + extra), targetX, py - 40);
-    } else {
-        ctx.moveTo(sourceX, py + 40);
-        ctx.lineTo(sourceX, py + (40 + extra));
-        ctx.lineTo(targetX, py + (40 + extra));
-        ctx.stroke();
-        drawArrow(ctx, targetX, py + (40 + extra), targetX, py + 40);
-    }
+    
+    ctx.ellipse(
+        (sourceX + targetX) / 2,
+        py,
+        (sourceX - targetX) / 2,
+        40 + extra,
+        0,
+        0,
+        Math.PI,
+        useSlotsAbove);
+    ctx.stroke();
+    var intPoint = intersectionEllipseCircle(
+        py,
+        targetX,
+        40,
+        (sourceX + targetX) / 2,
+        (sourceX - targetX) / 2,
+        40 + extra);
+    let ang = invertedIf(useSlotsAbove, Math.atan2(intPoint["y"] - py, intPoint["x"] - targetX));
+    drawArrowHead(ctx, targetX + 40 * Math.cos(ang), py + 40 * Math.sin(ang),
+       ang + Math.PI + invertedIf(!useSlotsAbove, correctingAngle / 1.5));
+}
+
+function invertedIf(condition, value) {
+    return condition ? -value : value;
 }
 
 function drawKMP() {
@@ -119,6 +157,11 @@ function drawKMP() {
     }
     let stepx = width / (pattern.length + 1);
     let py = height / 2;
+    drawBackArrow(ctx, 1, 0, stepx, py, slotsAbove, slotsBelow);
+    drawBackArrow(ctx, 2, 0, stepx, py, slotsAbove, slotsBelow);
+    drawBackArrow(ctx, 3, 1, stepx, py, slotsAbove, slotsBelow);
+    drawBackArrow(ctx, 4, 0, stepx, py, slotsAbove, slotsBelow);
+    drawInitialSelfLoop(ctx, stepx, py);
     for (let i = 0; i <= pattern.length; i++) {
         let px = stepx * i + stepx / 2;
         drawCircle(ctx, px, py, 40);
@@ -132,12 +175,6 @@ function drawKMP() {
             py);
         ctx.fillText("*" + pattern.substring(0, i), px, py);
     }
-
-    drawBackArrow(ctx, 1, 0, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 2, 0, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 3, 1, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 4, 0, stepx, py, slotsAbove, slotsBelow);
-    drawInitialSelfLoop(ctx, stepx, py);
 }
 
 addLoadEvent(drawKMP);
