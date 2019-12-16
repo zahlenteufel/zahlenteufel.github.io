@@ -101,7 +101,7 @@ function drawBackArrow(ctx, sourceI, targetI, stepx, py, slotsAbove, slotsBelow)
             slotsAbove[i] = maxSlotAbove + 1;
         }
     } else {
-        maxSlot = maxSlotBelow
+        maxSlot = maxSlotBelow;
         for (let i = targetI; i <= sourceI; i++) {
             slotsBelow[i] = maxSlotBelow + 1;
         }
@@ -157,10 +157,10 @@ function drawKMP() {
     }
     let stepx = width / (pattern.length + 1);
     let py = height / 2;
-    drawBackArrow(ctx, 1, 0, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 2, 0, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 3, 1, stepx, py, slotsAbove, slotsBelow);
-    drawBackArrow(ctx, 4, 0, stepx, py, slotsAbove, slotsBelow);
+    let f = buildFailureFunction(pattern);
+    for (let i = 1; i <= pattern.length; i++) {
+        drawBackArrow(ctx, i, f[i], stepx, py, slotsAbove, slotsBelow);
+    }
     drawInitialSelfLoop(ctx, stepx, py);
     for (let i = 0; i <= pattern.length; i++) {
         let px = stepx * i + stepx / 2;
@@ -175,6 +175,42 @@ function drawKMP() {
             py);
         ctx.fillText("*" + pattern.substring(0, i), px, py);
     }
+}
+
+// Code taken from http://community.topcoder.com/tc?module=Static&d1=tutorials&d2=stringSearching
+// Pay attention! 
+// The prefix under index i in the table above is 
+// is the string from pattern[0] to pattern[i - 1] 
+// inclusive, so the last character of the string under 
+// index i is pattern[i - 1].
+
+function buildFailureFunction(pattern) {
+  let m = pattern.length;
+  let f = [0, 0];
+  
+  for(let i = 2; i <= m; i++) {
+    // j is the index of the largest next partial match 
+    // (the largest suffix/prefix) of the string under  
+    // index i - 1.
+    let j = f[i - 1];
+    for( ; ; ) {
+      // Check to see if the last character of string i - 
+      // - pattern[i - 1] "expands" the current "candidate"
+      // best partial match - the prefix under index j.
+      if (pattern[j] == pattern[i - 1]) { 
+        f[i] = j + 1;
+        break; 
+      }
+      // If we cannot "expand" even the empty string.
+      if (j == 0) {
+          f[i] = 0;
+          break;
+      }
+      // Else go to the next best "candidate" partial match.
+      j = f[j];
+    }
+  }
+  return f;
 }
 
 addLoadEvent(drawKMP);
