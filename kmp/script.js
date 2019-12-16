@@ -57,7 +57,9 @@ function drawArrowHead(x, y, angle) {
     ctx.restore();
 }
 
-const correctingAngle = Math.PI / 8; // To make the arrow head look better.
+// To make the arrow head look better.
+// TODO: Get rid of this.
+const correctingAngle = Math.PI / 8; 
 
 function nodeX(i, n) {
     let stepx = width / (n + 1); 
@@ -83,7 +85,9 @@ function drawSelfLoop(i, n) {
     ctx.stroke();
     let intersectionX = -dx + Math.cos(startAngle) * loopRadius;
     let intersectionY = -dx + Math.sin(startAngle) * loopRadius;
-    drawArrowHead(intersectionX, intersectionY, startAngle - Math.PI / 2 + correctingAngle);
+    drawArrowHead(
+        intersectionX,
+        intersectionY, startAngle - Math.PI / 2 + correctingAngle);
     ctx.restore();
 }
 
@@ -94,17 +98,19 @@ function intersectionEllipseCircle(
     let outerAng = Math.PI / 2;
     let innerAng = Math.PI;
     let midAng;
+    let midAngX
+    let midAngY;
     while (innerAng - outerAng > 0.01) {
         midAng = (innerAng + outerAng) / 2;
-        let px = ellipseX + ellipseHRadius * Math.cos(midAng);
-        if (Math.hypot(px - circleX, ellipseVRadius * Math.sin(midAng)) < circleRadius) {
+        midAngX = ellipseX + ellipseHRadius * Math.cos(midAng);
+        midAngY = ellipseVRadius * Math.sin(midAng);
+        if (Math.hypot(midAngX - circleX, midAngY) < circleRadius) {
             innerAng = midAng;
         } else {
             outerAng = midAng;
         }
     }
-    return {x: ellipseX + ellipseHRadius * Math.cos(midAng),
-            y: nodeY + ellipseVRadius * Math.sin(midAng)};
+    return {x: midAngX, y: nodeY + midAngY};
 }
 
 // slotsAbove/Below[i] == slots above/below in the space between [i] and [i+1]
@@ -151,9 +157,12 @@ function drawBackArrow(sourceI, targetI, n, slotsAbove, slotsBelow) {
         (sourceX + targetX) / 2,
         (sourceX - targetX) / 2,
         40 + extra);
-    let ang = invertedIf(useSlotsAbove, Math.atan2(intPoint.y - nodeY, intPoint.x - targetX));
-    drawArrowHead(targetX + 40 * Math.cos(ang), nodeY + 40 * Math.sin(ang),
-       ang + Math.PI + invertedIf(!useSlotsAbove, correctingAngle / 1.5));
+    let ang = invertedIf(useSlotsAbove, 
+        Math.atan2(intPoint.y - nodeY, intPoint.x - targetX));
+    drawArrowHead(
+        targetX + 40 * Math.cos(ang),
+        nodeY + 40 * Math.sin(ang),
+        ang + Math.PI + invertedIf(!useSlotsAbove, correctingAngle));
 }
 
 function invertedIf(condition, value) {
