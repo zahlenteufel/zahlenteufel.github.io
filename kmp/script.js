@@ -141,7 +141,7 @@ function drawKMP() {
     let pattern = document.getElementById("pattern").value;
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
-    ctx.font = "25px Arial";
+    ctx.font = "italic 20px Times New Roman";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     let height = canvas.height;
@@ -173,6 +173,9 @@ function drawKMP() {
             py,
             px - 40,
             py);
+        if (i < pattern.length) {
+            ctx.fillText(pattern[i], px + stepx / 2, py - 20);
+        }
         ctx.fillText("*" + pattern.substring(0, i), px, py);
     }
 }
