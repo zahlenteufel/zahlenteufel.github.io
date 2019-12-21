@@ -25,6 +25,10 @@ function populateItems() {
 
 var items = [
     {
+        "href": "french2ipa/index.html",
+        "title": "French to IPA",
+    },
+    {
         "href": "appolonius-cone/index.html",
         "preview": "appolonius-cone/screenshot.png",
         "title": "Appolonius Cone",
