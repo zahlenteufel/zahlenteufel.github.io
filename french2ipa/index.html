@@ -4,23 +4,25 @@
 	<title>Zahlenteufel - French 2 IPA</title>
     <link rel="shortcut icon" href="../icon.png" />
     <link rel="stylesheet" type="text/css" href="../common.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="../common.js"></script>
     <script src="script.js" charset="utf-8"></script>
 </head>
 <body>
     <h1>Zahlenteufel - French 2 IPA</h1>
 
-    <div style="padding: 16px">
-        <label for="phrase">Phrase: </label>
+    <div style="padding: 16px;">
         <input id="phrase"
-               value="Je m'apelle Claude."
+               value="Je m'apelle Claude et je suis ingenieur."
                required
-               onchange="updateTranslation()"
-               style="text-align: center; width: 300px;">
+               oninput="updateTranslation()"
+               style="text-align: center; width: 100%; font-size: 26px;">
         </input>
+        <div id="replicated" style="padding-top: 16px; text-align: center; width: 100%; font-size: 26px;">
+        </div>
     </div>
 
-    <div id="result" style="padding: 16px"></div>
+    <div id="result" style="text-align: center; padding: 16px; font-size: 26px;"></div>
 
     <div id="explanation" style="padding: 16px"></div>
 </div>

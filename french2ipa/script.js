@@ -1,7 +1,12 @@
 function updateTranslation() {
-    let xx = translation(document.getElementById("phrase").value);
-    document.getElementById("result").innerText = xx.result;
-    document.getElementById("explanation").innerText = xx.explanation;
+    let phrase = document.getElementById("phrase").value;
+    let xx = translation(phrase);
+    $("#replicated").innerHTML = "";
+    for (let chunk of xx.chunks) {
+        $("#replicated").innerHTML += `<span class="chunk">${chunk}</span>`;
+    }
+    $("#result").innerText = xx.result;
+    $("#explanation").innerText = xx.explanation;
 }
 
 addLoadEvent(function () {
@@ -12,8 +17,10 @@ function translation(s) {
     s = s.toLowerCase();
     let result = "";
     let explanation = "";
+    let chunks = [];
     for (let i = 0; i < s.length; i++) {
         if (i < s.length - 1 && handle2Letters(s[i], s[i+1])) {
+            chunks.push(s[i] + s[i+1]);
             let handledChunk = translate2Letters(s[i], s[i+1]); 
             result += handledChunk.result;
             explanation += "\n" + handledChunk.explanation;
@@ -21,10 +28,11 @@ function translation(s) {
             continue; 
         }
         let handledChunk = translateLetter(s[i]);
+        chunks.push(s[i]);
         result += handledChunk.result;
         explanation += "\n" + handledChunk.explanation;
     }
-    return {"result": result, "explanation": explanation};
+    return {"chunks": chunks, "result": result, "explanation": explanation};
 }
 
 const constant = "abdfiklmnop ";
