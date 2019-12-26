@@ -1,6 +1,7 @@
 function updateTranslation() {
-    document.getElementById("result").innerText =
-        translation(document.getElementById("phrase").value);
+    let xx = translation(document.getElementById("phrase").value);
+    document.getElementById("result").innerText = xx.result;
+    document.getElementById("explanation").innerText = xx.explanation;
 }
 
 addLoadEvent(function () {
@@ -9,18 +10,19 @@ addLoadEvent(function () {
 
 function translation(s) {
     s = s.toLowerCase();
-    let result = '';
+    let result = "";
+    let explanation = "<add explanation hre>";
     for (let i = 0; i < s.length; i++) {
         console.log(i, s[i], i < s.length - 1, handle2Letters(s[i], s[i+1]) );
         if (i < s.length - 1 && handle2Letters(s[i], s[i+1])) {
-            console.log('handle ${i}');
+            console.log(`handle ${i}`);
             result += translate2Letters(s[i], s[i+1]);
             i++;
             continue; 
         }
         result += translateLetter(s[i]);
     }
-    return result;
+    return {"result": result, "explanation": explanation};
 }
 
 const constant = "abdfiklmnop ";
