@@ -11,16 +11,18 @@ addLoadEvent(function () {
 function translation(s) {
     s = s.toLowerCase();
     let result = "";
-    let explanation = "<add explanation hre>";
+    let explanation = "";
     for (let i = 0; i < s.length; i++) {
-        console.log(i, s[i], i < s.length - 1, handle2Letters(s[i], s[i+1]) );
         if (i < s.length - 1 && handle2Letters(s[i], s[i+1])) {
-            console.log(`handle ${i}`);
-            result += translate2Letters(s[i], s[i+1]);
+            let handledChunk = translate2Letters(s[i], s[i+1]); 
+            result += handledChunk.result;
+            explanation += "\n" + handledChunk.explanation;
             i++;
             continue; 
         }
-        result += translateLetter(s[i]);
+        let handledChunk = translateLetter(s[i]);
+        result += handledChunk.result;
+        explanation += "\n" + handledChunk.explanation;
     }
     return {"result": result, "explanation": explanation};
 }
@@ -40,12 +42,17 @@ const twoLettersTrad = ["o", "ʒə", " ", " ", "l"];
 
 handle2Letters = (a, b) => twoLetters.indexOf(`${a}${b}`) != -1;
 
-translate2Letters = (a, b) => twoLettersTrad[twoLetters.indexOf(`${a}${b}`)];
+function translate2Letters(a, b) {
+    let letters = `${a}${b}`;
+    let result = twoLettersTrad[twoLetters.indexOf(letters)];
+    return {"result": result, "explanation": `${letters} 🡢 ${result}`};
+}
+    
 
 function translateLetter(c) {
     if (constant.indexOf(c) != -1)
-        return c;
+        return {result: c, explanation: `${c} 🡢 ${c}`};
     if (c in others)
-        return others[c];
-    return "?";
+        return {result: others[c], explanation: `${c} 🡢 ${others[c]}`};
+    return {result: "?", explanation: "<unhandled case>"};
 }
