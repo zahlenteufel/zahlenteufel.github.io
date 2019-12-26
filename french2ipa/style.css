@@ -5,7 +5,15 @@
     width: 100%;
 }
 
+#result {
+    cursor: pointer;
+}
+
 .chunks span {
     border: 1px solid silver;
     cursor: pointer;
+}
+
+.highlight {
+    font-weight: bold;
 }

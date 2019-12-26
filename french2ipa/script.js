@@ -1,38 +1,49 @@
 function updateTranslation() {
-    let phrase = document.getElementById("phrase").value;
-    let xx = translation(phrase);
+    let translatedChunks = translate($("#phrase").value);
     $("#replicated").innerHTML = "";
-    for (let chunk of xx.chunks) {
-        $("#replicated").innerHTML += `<span>${chunk}</span>`;
+    $("#result").innerText = "";
+    for (let translatedChunk of translatedChunks) {
+        let originChunk = document.createElement("span");
+        originChunk.innerText = translatedChunk.chunk;
+        $("#replicated").appendChild(originChunk);
+        let targetChunk = document.createElement("span");
+        targetChunk.innerText = translatedChunk.result;
+        $("#result").appendChild(targetChunk);
+        explain(translatedChunk, originChunk, targetChunk);
     }
-    $("#result").innerText = xx.result;
-    $("#explanation").innerText = xx.explanation;
 }
 
-addLoadEvent(function () {
-    updateTranslation();
-});
+function explain(translatedChunk, originChunk, targetChunk) {
+    originChunk.onmouseover = targetChunk.onmouseover =
+        function (_) {
+            clearHighlights();
+            $("#explanation").innerText = translatedChunk.explanation;
+            originChunk.classList.add("highlight");
+            targetChunk.classList.add("highlight");
+        };
+}
 
-function translation(s) {
+function clearHighlights() {
+    $("#result").childNodes.forEach(node => node.classList.remove("highlight"));
+    $("#replicated").childNodes.forEach(node => node.classList.remove("highlight"));
+}
+
+addLoadEvent(updateTranslation);
+
+function translate(s) {
     s = s.toLowerCase();
-    let result = "";
-    let explanation = "";
-    let chunks = [];
+    let translatedChunks = [];
     for (let i = 0; i < s.length; i++) {
-        if (i < s.length - 1 && handle2Letters(s[i], s[i+1])) {
-            chunks.push(s[i] + s[i+1]);
-            let handledChunk = translate2Letters(s[i], s[i+1]); 
-            result += handledChunk.result;
-            explanation += "\n" + handledChunk.explanation;
+        let translatedChunk;
+        if (i < s.length - 1 && handle2Letters(s[i], s[i + 1])) {
+            translatedChunk = translateChunk2Letters(s[i] + s[i + 1]);
             i++;
-            continue; 
+        } else {
+            translatedChunk = translateChunk1Letter(s[i]);
         }
-        let handledChunk = translateLetter(s[i]);
-        chunks.push(s[i]);
-        result += handledChunk.result;
-        explanation += "\n" + handledChunk.explanation;
+        translatedChunks.push(translatedChunk);
     }
-    return {"chunks": chunks, "result": result, "explanation": explanation};
+    return translatedChunks;
 }
 
 const constant = "abdfiklmnop ";
@@ -50,17 +61,15 @@ const twoLettersTrad = ["o", "ʒə", " ", " ", "l"];
 
 handle2Letters = (a, b) => twoLetters.indexOf(`${a}${b}`) != -1;
 
-function translate2Letters(a, b) {
-    let letters = `${a}${b}`;
+function translateChunk2Letters(letters) {
     let result = twoLettersTrad[twoLetters.indexOf(letters)];
-    return {"result": result, "explanation": `${letters} 🡢 ${result}`};
+    return { "result": result, "explanation": `${letters} 🡢 ${result}`, chunk: letters };
 }
-    
 
-function translateLetter(c) {
+function translateChunk1Letter(c) {
     if (constant.indexOf(c) != -1)
-        return {result: c, explanation: `${c} 🡢 ${c}`};
+        return { result: c, explanation: `${c} 🡢 ${c}`, chunk: c };
     if (c in others)
-        return {result: others[c], explanation: `${c} 🡢 ${others[c]}`};
-    return {result: "?", explanation: "<unhandled case>"};
+        return { result: others[c], explanation: `${c} 🡢 ${others[c]}`, chunk: c };
+    return { result: "?", explanation: "<unhandled case>", chunk: c };
 }
