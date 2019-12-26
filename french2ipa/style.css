@@ -1,4 +1,11 @@
-.chunk {
+.chunks {
+    font-size: 26px;
+    padding-top: 16px;
+    text-align: center;
+    width: 100%;
+}
+
+.chunks span {
     border: 1px solid silver;
     cursor: pointer;
 }

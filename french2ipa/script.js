@@ -3,7 +3,7 @@ function updateTranslation() {
     let xx = translation(phrase);
     $("#replicated").innerHTML = "";
     for (let chunk of xx.chunks) {
-        $("#replicated").innerHTML += `<span class="chunk">${chunk}</span>`;
+        $("#replicated").innerHTML += `<span>${chunk}</span>`;
     }
     $("#result").innerText = xx.result;
     $("#explanation").innerText = xx.explanation;
