@@ -17,3 +17,7 @@
 .highlight {
     font-weight: bold;
 }
+
+#explanation .overruled {
+    text-decoration: line-through;
+}

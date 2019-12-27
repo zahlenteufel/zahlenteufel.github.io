@@ -17,7 +17,16 @@ function explain(translatedChunk, originChunk, targetChunk) {
     originChunk.onmouseover = targetChunk.onmouseover =
         function (_) {
             clearHighlights();
-            $("#explanation").innerText = translatedChunk.explanation;
+            $("#explanation").innerHTML = "";
+            let item = document.createElement("li");
+            item.innerText = translatedChunk.explanation;
+            $("#explanation").appendChild(item);
+            for (let other of translatedChunk.otherRules) {
+                let item = document.createElement("li");
+                item.innerText = other;
+                item.classList.add("overruled");
+                $("#explanation").appendChild(item);
+            }
             originChunk.classList.add("highlight");
             targetChunk.classList.add("highlight");
         };
@@ -29,47 +38,3 @@ function clearHighlights() {
 }
 
 addLoadEvent(updateTranslation);
-
-function translate(s) {
-    s = s.toLowerCase();
-    let translatedChunks = [];
-    for (let i = 0; i < s.length; i++) {
-        let translatedChunk;
-        if (i < s.length - 1 && handle2Letters(s[i], s[i + 1])) {
-            translatedChunk = translateChunk2Letters(s[i] + s[i + 1]);
-            i++;
-        } else {
-            translatedChunk = translateChunk1Letter(s[i]);
-        }
-        translatedChunks.push(translatedChunk);
-    }
-    return translatedChunks;
-}
-
-const constant = "abdfiklmnop ";
-const others = {
-    "j": "ʒ",
-    "e": "ə",
-    "c": "k",
-    "'": "",
-    ".": "",
-}
-
-// Order matters.
-const twoLetters = ["au", "je", "e ", "e.", "ll"];
-const twoLettersTrad = ["o", "ʒə", " ", " ", "l"];
-
-handle2Letters = (a, b) => twoLetters.indexOf(`${a}${b}`) != -1;
-
-function translateChunk2Letters(letters) {
-    let result = twoLettersTrad[twoLetters.indexOf(letters)];
-    return { "result": result, "explanation": `${letters} 🡢 ${result}`, chunk: letters };
-}
-
-function translateChunk1Letter(c) {
-    if (constant.indexOf(c) != -1)
-        return { result: c, explanation: `${c} 🡢 ${c}`, chunk: c };
-    if (c in others)
-        return { result: others[c], explanation: `${c} 🡢 ${others[c]}`, chunk: c };
-    return { result: "?", explanation: "<unhandled case>", chunk: c };
-}
