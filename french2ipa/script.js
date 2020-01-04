@@ -3,14 +3,13 @@ function updateTranslation() {
     $("#replicated").innerHTML = "";
     $("#result").innerText = "";
     for (let translatedChunk of translatedChunks) {
-        let originChunk = document.createElement("span");
-        originChunk.innerText = translatedChunk.chunk;
+        let originChunk = createChunk(translatedChunk.chunk);
+        let targetChunk = createChunk(translatedChunk.result);
         $("#replicated").appendChild(originChunk);
-        let targetChunk = document.createElement("span");
-        targetChunk.innerText = translatedChunk.result;
         $("#result").appendChild(targetChunk);
         explain(translatedChunk, originChunk, targetChunk);
     }
+    drawOtherChunks();
 }
 
 function explain(translatedChunk, originChunk, targetChunk) {
@@ -32,9 +31,34 @@ function explain(translatedChunk, originChunk, targetChunk) {
         };
 }
 
+function createChunk(label) {
+    let chunk = document.createElement("span");
+    chunk.innerText = label;
+    return chunk;
+}
+
 function clearHighlights() {
     $("#result").childNodes.forEach(node => node.classList.remove("highlight"));
     $("#replicated").childNodes.forEach(node => node.classList.remove("highlight"));
+}
+
+function centerOfChunk(i) {
+    let rect = $("#replicated").childNodes[i].getBoundingClientRect();
+    return rect.x + rect.width / 2;
+}
+
+function createAnotherChunkCenteredAtX(label, centerX) {
+    let otherChunk = createChunk(label);
+    otherChunk.style.position = "absolute";
+    $("#more-chunks").appendChild(otherChunk);
+    let x = centerX - otherChunk.clientWidth / 2;
+    otherChunk.style.left = `${x}px`;
+}
+
+function drawOtherChunks() {
+    for (var i = 0; i < $("#replicated").childNodes.length; i++) {
+        createAnotherChunkCenteredAtX(i, centerOfChunk(i));
+    }
 }
 
 addLoadEvent(updateTranslation);

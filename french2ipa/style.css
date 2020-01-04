@@ -12,6 +12,7 @@
 .chunks span {
     border: 1px solid silver;
     cursor: pointer;
+    border-radius: 50%;
 }
 
 .highlight {
